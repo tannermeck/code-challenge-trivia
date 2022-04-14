@@ -11,6 +11,7 @@ function App() {
   const [incorrect, setIncorrect] = useState(false);
   const [timer, setTimer] = useState(30);
   const [answerIndex, setAnswerIndex] = useState(0);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const fetchData = () => {
@@ -31,9 +32,10 @@ function App() {
   // };
   const handleStartGame = () => {
     setStart(true);
-    setAnswerIndex(+questions[index].solutionIndex);
+    // setAnswerIndex(+questions[index].solutionIndex);
   };
   const handleSubmitAnswer = () => {
+    setDisabled(true);
     if (+questions[index].solutionIndex === +answer) {
       //turn the selected answer green
       setCorrect(true);
@@ -53,7 +55,15 @@ function App() {
       return 'red';
     }
   };
-
+  const handleNext = async () => {
+    setDisabled(false);
+    if (index <= 3) {
+      setIndex(index + 1);
+      setAnswerIndex(questions[index + 1].solutionIndex);
+      setCorrect(false);
+      setIncorrect(false);
+    }
+  };
   return (
     <div>
       {!start && <button onClick={handleStartGame}>Start the Game</button>}
@@ -72,9 +82,13 @@ function App() {
               />
             </section>
           ))}
-          <button onClick={handleSubmitAnswer}>Submit Answer!</button>
-          {correct && <h1>Correct!!!</h1>}
-          {incorrect && <h1>Incorrect..</h1>}
+          <button disabled={disabled} onClick={handleSubmitAnswer}>
+            Submit Answer!
+          </button>
+          {/* {correct && <h1>Correct!!!</h1>}
+          {incorrect && <h1>Incorrect..</h1>} */}
+          {correct && index < 2 && <button onClick={handleNext}>Next</button>}
+          {incorrect && index < 2 && <button onClick={handleNext}>Next</button>}
         </div>
       )}
     </div>

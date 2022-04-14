@@ -6,7 +6,7 @@ const data = [
   },
   {
     question: 'What is one plus one?',
-    options: ['none', 'one', 'two', 'all'],
+    options: ['none', 'one', 'two', 'three'],
     solutionIndex: 2,
   },
   {
